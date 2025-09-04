@@ -59,4 +59,9 @@ public class SpinAction : BaseAction
             actionValue = 0,
         };
     }
+
+    public override int GetActionRange()
+    {
+        return 0;
+    }
 }

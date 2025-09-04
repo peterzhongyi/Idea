@@ -60,7 +60,7 @@ public class GrenadeProjectile : MonoBehaviour
     public void Setup(GridPosition targetGridPosition, Action onGrenadeBehaviorComplete)
     {
         this.onGrenadeBehaviorComplete = onGrenadeBehaviorComplete;
-        targetPosition = LevelGrid.Instance.GetWorldPosition(targetGridPosition);
+        targetPosition = GridSystemHex.Instance.GetWorldPosition(targetGridPosition);
 
         positionXZ = transform.position;
         positionXZ.y = 0;

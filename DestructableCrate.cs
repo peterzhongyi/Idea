@@ -12,7 +12,7 @@ public class DestructableCrate : MonoBehaviour
 
     private void Start()
     {
-        gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        gridPosition = GridSystemHex.Instance.GetGridPosition(transform.position);
     }
 
     public GridPosition GetGridPosition()

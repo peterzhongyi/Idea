@@ -42,13 +42,13 @@ public class MoveAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath(unit.GetGridPosition(), gridPosition, out int pathLength);
+        List<GridPosition> pathGridPositionList = GridSystemHex.Instance.FindPath(unit.GetGridPosition(), gridPosition, out int pathLength);
         currentPositionIndex = 0;
         positionList = new List<Vector3>();
 
         foreach (GridPosition pathGridPosition in pathGridPositionList)
         {
-            positionList.Add(LevelGrid.Instance.GetWorldPosition(pathGridPosition));
+            positionList.Add(GridSystemHex.Instance.GetWorldPosition(pathGridPosition));
         }
 
         OnStartMoving?.Invoke(this, EventArgs.Empty);
@@ -68,7 +68,7 @@ public class MoveAction : BaseAction
                 GridPosition offsetGridPosition = new GridPosition(x, z);
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                if (!GridSystemHex.Instance.IsValidGridPosition(testGridPosition))
                 {
                     continue;
                 }
@@ -78,26 +78,24 @@ public class MoveAction : BaseAction
                     continue;
                 }
 
-                if (LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                if (GridSystemHex.Instance.HasAnyUnitOnGridPosition(testGridPosition))
                 {
                     continue;
                 }
 
-                if (!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
+                if (!GridSystemHex.Instance.IsWalkableGridPosition(testGridPosition))
                 {
                     continue;
                 }
 
-                if (!Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
+                if (!GridSystemHex.Instance.HasPath(unitGridPosition, testGridPosition))
                 {
                     continue;
                 }
 
-                int pathfindingDistanceMultiplier = 10;
-                if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition)
-                    > maxMoveDistance * pathfindingDistanceMultiplier)
+                if (GridSystemHex.Instance.GetPathLength(unitGridPosition, testGridPosition) > maxMoveDistance)
                 {
-                    continue;        
+                    continue;
                 }
 
                 validGridPositionList.Add(testGridPosition);
@@ -111,7 +109,7 @@ public class MoveAction : BaseAction
     {
         return "Move";
     }
-    
+
     public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
     {
         int targetCountAtGridPosition = unit.GetAction<ShootAction>().GetTargetCountAtPosition(gridPosition);
@@ -120,5 +118,10 @@ public class MoveAction : BaseAction
             gridPosition = gridPosition,
             actionValue = targetCountAtGridPosition * 10,
         };
+    }
+
+    public override int GetActionRange()
+    {
+        return maxMoveDistance;
     }
 }

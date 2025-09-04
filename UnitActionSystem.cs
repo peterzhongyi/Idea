@@ -30,6 +30,7 @@ public class UnitActionSystem : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("Set Selected Unit: " + selectedUnit.GetGridPosition());
         SetSelectedUnit(selectedUnit);
     }
     private void Update()
@@ -62,7 +63,7 @@ public class UnitActionSystem : MonoBehaviour
     {
         if (InputManager.Instance.IsMouseButtonDownThisFrame())
         {
-            GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+            GridPosition mouseGridPosition = GridSystemHex.Instance.GetGridPosition(MouseWorld.GetPosition());
 
             if (!selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {

@@ -43,12 +43,12 @@ public class InteractAction : BaseAction
                 GridPosition offsetGridPosition = new GridPosition(x, z);
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                if (!GridSystemHex.Instance.IsValidGridPosition(testGridPosition))
                 {
                     continue;
                 }
 
-                IInteractable interactable = LevelGrid.Instance.GetInteractableAtGridPosition(testGridPosition);
+                IInteractable interactable = GridSystemHex.Instance.GetInteractableAtGridPosition(testGridPosition);
                 if (interactable == null)
                 {
                     // No interactable on this grid position
@@ -67,7 +67,7 @@ public class InteractAction : BaseAction
     {
         Debug.Log("Interact Action");
 
-        IInteractable interactable = LevelGrid.Instance.GetInteractableAtGridPosition(gridPosition);
+        IInteractable interactable = GridSystemHex.Instance.GetInteractableAtGridPosition(gridPosition);
         interactable.Interact(OnInteractComplete);
         ActionStart(onActionComplete);
     }
@@ -75,5 +75,10 @@ public class InteractAction : BaseAction
     private void OnInteractComplete()
     {
         ActionComplete();
+    }
+
+    public override int GetActionRange()
+    {
+        return maxInteractDistance;
     }
 }

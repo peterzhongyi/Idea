@@ -93,22 +93,27 @@ public class SwordAction : BaseAction
                 GridPosition offsetGridPosition = new GridPosition(x, z);
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                if (!GridSystemHex.Instance.IsValidGridPosition(testGridPosition))
                 {
                     continue;
                 }
 
-                if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                if (!GridSystemHex.Instance.HasAnyUnitOnGridPosition(testGridPosition))
                 {
                     // Can't shoot an empty grid position
                     continue;
                 }
 
-                Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
+                Unit targetUnit = GridSystemHex.Instance.GetUnitAtGridPosition(testGridPosition);
 
                 if (targetUnit.IsEnemy() == unit.IsEnemy())
                 {
                     // Both are on the same side
+                    continue;
+                }
+
+                if (GridSystemHex.Instance.GetPathLength(unitGridPosition, testGridPosition) > maxSwordDistance)
+                {
                     continue;
                 }
 
@@ -124,7 +129,7 @@ public class SwordAction : BaseAction
     {
         Debug.Log("SwordAction");
 
-        targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+        targetUnit = GridSystemHex.Instance.GetUnitAtGridPosition(gridPosition);
         state = State.SwingingSwordBeforeHit;
         float beforeHitStateTime = 0.7f;
         stateTimer = beforeHitStateTime;
@@ -134,7 +139,7 @@ public class SwordAction : BaseAction
         ActionStart(onActionComplete);
     }
 
-    public int GetMaxSwordDistance()
+    public override int GetActionRange()
     {
         return maxSwordDistance;
     }

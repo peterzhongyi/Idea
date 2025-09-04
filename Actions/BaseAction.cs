@@ -33,6 +33,8 @@ public abstract class BaseAction : MonoBehaviour
         return 1;
     }
 
+    public abstract int GetActionRange();
+
     protected void ActionStart(Action onActionComplete)
     {
         isActive = true;

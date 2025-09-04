@@ -25,8 +25,9 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
-        gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-        LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
+        gridPosition = GridSystemHex.Instance.GetGridPosition(transform.position);
+        Debug.Log("Unit grid Position set to: " + gridPosition);
+        GridSystemHex.Instance.AddUnitAtGridPosition(gridPosition, this);
 
         TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
         healthSystem.OnDead += HealthSystem_OnDead;
@@ -35,7 +36,7 @@ public class Unit : MonoBehaviour
     }
     private void Update()
     {
-        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        GridPosition newGridPosition = GridSystemHex.Instance.GetGridPosition(transform.position);
         if (newGridPosition != gridPosition)
         {
 
@@ -43,7 +44,7 @@ public class Unit : MonoBehaviour
             // based on the previous position.
             GridPosition oldGridPosition = gridPosition;
             gridPosition = newGridPosition;
-            LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPosition, newGridPosition);
+            GridSystemHex.Instance.UnitMovedGridPosition(this, oldGridPosition, newGridPosition);
         }
     }
 
@@ -135,7 +136,7 @@ public class Unit : MonoBehaviour
 
     private void HealthSystem_OnDead(object sender, EventArgs e)
     {
-        LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
+        GridSystemHex.Instance.RemoveUnitAtGridPosition(gridPosition, this);
         Destroy(gameObject);
 
         OnAnyUnitDead?.Invoke(this, EventArgs.Empty);

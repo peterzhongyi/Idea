@@ -42,13 +42,12 @@ public class GrenadeAction : BaseAction
                 GridPosition offsetGridPosition = new GridPosition(x, z);
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                if (!GridSystemHex.Instance.IsValidGridPosition(testGridPosition))
                 {
                     continue;
                 }
 
-                int testDistance = Mathf.Abs(x) + Mathf.Abs(z);
-                if (testDistance > maxThrowDistance)
+                if (GridSystemHex.Instance.GetPathLength(unitGridPosition, testGridPosition) > maxThrowDistance)
                 {
                     continue;
                 }
@@ -74,5 +73,10 @@ public class GrenadeAction : BaseAction
     private void OnGrenadeBehaviorComplete()
     {
         ActionComplete();
+    }
+
+    public override int GetActionRange()
+    {
+        return maxThrowDistance;
     }
 }

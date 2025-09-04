@@ -18,8 +18,8 @@ public class Door : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-        LevelGrid.Instance.SetInteractableAtGridPosition(gridPosition, this);
+        gridPosition = GridSystemHex.Instance.GetGridPosition(transform.position);
+        GridSystemHex.Instance.SetInteractableAtGridPosition(gridPosition, this);
 
         if (isOpen)
         {
@@ -69,13 +69,13 @@ public class Door : MonoBehaviour, IInteractable
     {
         isOpen = true;
         animator.SetBool("IsOpen", isOpen);
-        Pathfinding.Instance.SetWalkableGridPosition(gridPosition, true);
+        // Pathfinding.Instance.SetWalkableGridPosition(gridPosition, true);
     }
 
     private void CloseDoor()
     {
         isOpen = false;
         animator.SetBool("IsOpen", isOpen);
-        Pathfinding.Instance.SetWalkableGridPosition(gridPosition, false);
+        // Pathfinding.Instance.SetWalkableGridPosition(gridPosition, false);
     }
 }

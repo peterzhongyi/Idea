@@ -119,7 +119,7 @@ public class ShootAction : BaseAction
                 GridPosition offsetGridPosition = new GridPosition(x, z);
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                if (!GridSystemHex.Instance.IsValidGridPosition(testGridPosition))
                 {
                     continue;
                 }
@@ -130,13 +130,13 @@ public class ShootAction : BaseAction
                     continue;
                 }
 
-                if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                if (!GridSystemHex.Instance.HasAnyUnitOnGridPosition(testGridPosition))
                 {
                     // Can't shoot an empty grid position
                     continue;
                 }
 
-                Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
+                Unit targetUnit = GridSystemHex.Instance.GetUnitAtGridPosition(testGridPosition);
 
                 if (targetUnit.IsEnemy() == unit.IsEnemy())
                 {
@@ -144,7 +144,7 @@ public class ShootAction : BaseAction
                     continue;
                 }
 
-                Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
+                Vector3 unitWorldPosition = GridSystemHex.Instance.GetWorldPosition(unitGridPosition);
                 Vector3 shootDir = (targetUnit.GetWorldPosition() - unitWorldPosition).normalized;
                 float unitShoulderHeight = 1.7f;
                 if (Physics.Raycast(
@@ -167,7 +167,7 @@ public class ShootAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+        targetUnit = GridSystemHex.Instance.GetUnitAtGridPosition(gridPosition);
 
         state = State.Aiming;
         float aimingStateTime = 1f;
@@ -183,14 +183,9 @@ public class ShootAction : BaseAction
         return targetUnit;
     }
 
-    public int GetMaxShootDistane()
-    {
-        return maxShootDistance;
-    }
-
     public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
     {
-        Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+        Unit targetUnit = GridSystemHex.Instance.GetUnitAtGridPosition(gridPosition);
 
         return new EnemyAIAction
         {
@@ -203,5 +198,10 @@ public class ShootAction : BaseAction
     {
         // Number of shootable targets
         return GetValidActionGridPositionList(gridPosition).Count;
+    }
+
+    public override int GetActionRange()
+    {
+        return maxShootDistance;
     }
 }

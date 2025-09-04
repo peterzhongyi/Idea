@@ -1,18 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridObject
+public class GridObject : MonoBehaviour
 {
-    private GridSystemHex<GridObject> gridSystem;
+    // Visual
+    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private GameObject selectedGameObject;
+
+    // General
     private GridPosition gridPosition;
     private List<Unit> unitList;
-
     private IInteractable interactable;
 
-    public GridObject(GridSystemHex<GridObject> gridSystem, GridPosition gridPosition)
+    // Pathfinding
+    private int gCost; // Waling Cost from Start Node
+    private int hCost; // Heuristic Cost to reach End Node
+    private int fCost; // gCost + hCost
+    private GridObject cameFromPathNode;
+    private bool isWalkable = true;
+
+    private void Awake()
     {
-        this.gridSystem = gridSystem;
-        this.gridPosition = gridPosition;
+        gridPosition = GridSystemHex.Instance.GetGridPosition(transform.position);
         unitList = new List<Unit>();
     }
 
@@ -67,5 +76,86 @@ public class GridObject
     {
         this.interactable = interactable;
     }
+
+    public void Show(Material material)
+    {
+        meshRenderer.enabled = true;
+        meshRenderer.material = material;
+    }
+
+    public void Hide()
+    {
+        meshRenderer.enabled = false;
+    }
+
+    public void ShowSelected()
+    {
+        selectedGameObject.SetActive(true);
+    }
+
+    public void HideSelected()
+    {
+        selectedGameObject.SetActive(false);
+    }
+
+    public int GetGCost()
+    {
+        return gCost;
+    }
+
+    public int GetHCost()
+    {
+        return hCost;
+    }
+
+    public int GetFCost()
+    {
+        return fCost;
+    }
+
+    public void SetGCost(int gCost)
+    {
+        this.gCost = gCost;
+    }
+
+    public void SetHCost(int hCost)
+    {
+        this.hCost = hCost;
+    }
+
+    public void CalculateFCost()
+    {
+        fCost = gCost + hCost;
+    }
+
+    public void ResetCameFromPathNode()
+    {
+        cameFromPathNode = null;
+    }
+
+    public void SetCameFromPathNode(GridObject gridObject)
+    {
+        cameFromPathNode = gridObject;
+    }
+
+    public GridObject GetCameFromPathNode()
+    {
+        return cameFromPathNode;
+    }
     
+    public GridPosition GetGridPosition()
+    {
+        return gridPosition;
+    }
+
+    public bool IsWalkable()
+    {
+        return isWalkable;
+    }
+
+    public void SetIsWalkable(bool isWalkable)
+    {
+        this.isWalkable = isWalkable;
+    }
+
 }
