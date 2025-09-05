@@ -63,8 +63,10 @@ public class EnemyAI : MonoBehaviour
 
     private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
     {
+        // Debug.Log("EnemyAI detects turn changed!");
         if (!TurnSystem.Instance.IsPlayerTurn())
         {
+            // Debug.Log("EnemyAI state set to TakingTurn!");
             state = State.TakingTurn;
             timer = 2f;
         }
@@ -73,6 +75,7 @@ public class EnemyAI : MonoBehaviour
 
     private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
+        // Debug.Log("Enemies togther Trying to take action!");
         foreach (Unit enemyUnit in UnitManager.Instance.GetEnemyUnitList())
         {
             if (TryTakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete))
@@ -85,6 +88,7 @@ public class EnemyAI : MonoBehaviour
 
     private bool TryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
     {
+        // Debug.Log("Enemy Trying to take action!");
         EnemyAIAction bestEnemyAIAction = null;
         BaseAction bestBaseAction = null;
         foreach (BaseAction baseAction in enemyUnit.GetBaseActionArray())
@@ -92,6 +96,7 @@ public class EnemyAI : MonoBehaviour
             if (!enemyUnit.CanSpendActionPointsToTakeAction(baseAction))
             {
                 // Enemy cannot afford this action
+                // Debug.Log("Enemy can't afford this action: " + baseAction.GetActionName());
                 continue;
             }
 
@@ -109,6 +114,7 @@ public class EnemyAI : MonoBehaviour
                     bestBaseAction = baseAction;
                 }
             }
+            // Debug.Log("Enemy decides best action: " + bestBaseAction.GetActionName());
         }
 
         if (bestEnemyAIAction != null && enemyUnit.TrySpendActionPointsToTakeAction(bestBaseAction))

@@ -22,9 +22,11 @@ public class UnitManager : MonoBehaviour
         unitList = new List<Unit>();
         friendlyUnitList = new List<Unit>();
         enemyUnitList = new List<Unit>();
-    }
-    private void Start()
-    {
+
+        // This is necessary in Awake instead of Start before Unit gets initialized 
+        // before Unit Manager, and will invoke OnAnyUnitSpawned before
+        // UnitManager Start(). This is configured in project setting, script
+        // execution order. Haven't run into issues yet.
         Unit.OnAnyUnitSpawned += Unit_OnAnyUnitSpawned;
         Unit.OnAnyUnitDead += Unit_OnAnyUnitDead;
     }

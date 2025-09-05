@@ -7,6 +7,7 @@ public class GridObject : MonoBehaviour
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private GameObject selectedGameObject;
     [SerializeField] private GameObject fireSurface;
+    [SerializeField] private GameObject oilSurface;
 
     // General
     private GridPosition gridPosition;
@@ -102,11 +103,23 @@ public class GridObject : MonoBehaviour
     public void ShowFireSurface()
     {
         fireSurface.SetActive(true);
+        oilSurface.SetActive(false);
     }
 
     public void HideFireSurface()
     {
         fireSurface.SetActive(false);
+    }
+
+    public void ShowOilSurface()
+    {
+        oilSurface.SetActive(true);
+        fireSurface.SetActive(false);
+    }
+
+    public void HideOilSurface()
+    {
+        oilSurface.SetActive(false);
     }
 
     public int GetGCost()

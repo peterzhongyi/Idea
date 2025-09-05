@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrenadeProjectile : MonoBehaviour
+public class RockProjectile : MonoBehaviour
 {
     public static event EventHandler OnAnyGrenadeExploded;
 
@@ -61,7 +61,7 @@ public class GrenadeProjectile : MonoBehaviour
 
             foreach (GridObject gridObject in affectedGridObjects)
             {
-                gridObject.ShowFireSurface();
+                gridObject.ShowOilSurface();
             }
             
             Destroy(gameObject);

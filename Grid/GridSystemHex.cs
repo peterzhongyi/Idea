@@ -274,6 +274,9 @@ public class GridSystemHex : MonoBehaviour
             case InteractAction interactAction:
                 gridVisualType = GridVisualType.Blue;
                 break;
+            case RockAction rockAction:
+                gridVisualType = GridVisualType.Yellow;
+                break;
         }
 
         // ShowActionRange(selectedUnit.GetGridPosition(), selectedAction.GetActionRange(), GridVisualType.White);
