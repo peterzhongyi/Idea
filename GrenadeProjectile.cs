@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GrenadeProjectile : MonoBehaviour
@@ -32,8 +33,9 @@ public class GrenadeProjectile : MonoBehaviour
         float reachedTargetDistance = 0.2f;
         if (Vector3.Distance(positionXZ, targetPosition) < reachedTargetDistance)
         {
-            float damageRadius = 4f;
+            float damageRadius = 3 * 2f;
             Collider[] colliderArray = Physics.OverlapSphere(targetPosition, damageRadius);
+            List<GridObject> affectedGridObjects = new();
 
             foreach (Collider collider in colliderArray)
             {
@@ -45,6 +47,10 @@ public class GrenadeProjectile : MonoBehaviour
                 {
                     destructableCrate.Damage();
                 }
+                if (collider.TryGetComponent<GridObject>(out GridObject gridObject))
+                {
+                    affectedGridObjects.Add(gridObject);
+                }
             }
 
             OnAnyGrenadeExploded?.Invoke(this, EventArgs.Empty);
@@ -52,6 +58,12 @@ public class GrenadeProjectile : MonoBehaviour
             // Clean up trail after hit.
             trailRenderer.transform.parent = null;
             Instantiate(grenadeExplodeVfxPrefab, targetPosition + Vector3.up * 1f, Quaternion.identity);
+
+            foreach (GridObject gridObject in affectedGridObjects)
+            {
+                gridObject.ShowFireSurface();
+            }
+            // targetGridObject.ShowFireSurface();
             Destroy(gameObject);
 
             onGrenadeBehaviorComplete();

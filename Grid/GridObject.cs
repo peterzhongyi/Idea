@@ -6,6 +6,7 @@ public class GridObject : MonoBehaviour
     // Visual
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private GameObject selectedGameObject;
+    [SerializeField] private GameObject fireSurface;
 
     // General
     private GridPosition gridPosition;
@@ -96,6 +97,16 @@ public class GridObject : MonoBehaviour
     public void HideSelected()
     {
         selectedGameObject.SetActive(false);
+    }
+
+    public void ShowFireSurface()
+    {
+        fireSurface.SetActive(true);
+    }
+
+    public void HideFireSurface()
+    {
+        fireSurface.SetActive(false);
     }
 
     public int GetGCost()
