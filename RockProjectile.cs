@@ -61,7 +61,7 @@ public class RockProjectile : MonoBehaviour
 
             foreach (GridObject gridObject in affectedGridObjects)
             {
-                gridObject.ShowOilSurface();
+                gridObject.SetOnOil();
             }
             
             Destroy(gameObject);

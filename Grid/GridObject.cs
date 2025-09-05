@@ -21,10 +21,36 @@ public class GridObject : MonoBehaviour
     private GridObject cameFromPathNode;
     private bool isWalkable = true;
 
+    private float timer;
+    private bool shouldTryPropagate;
+
     private void Awake()
     {
         gridPosition = GridSystemHex.Instance.GetGridPosition(transform.position);
         unitList = new List<Unit>();
+    }
+
+    private void Update()
+    {
+        if (!shouldTryPropagate)
+        {
+            return;
+        }
+
+        timer -= Time.deltaTime;
+        if (timer <= 0f)
+        {
+            List<GridObject> neightbors = GridSystemHex.Instance.GetNeighborList(this);
+            foreach (GridObject gridObject in neightbors)
+            {
+                if (gridObject.IsOnOil())
+                {
+                    gridObject.SetOnFire();
+                }
+            }
+
+            shouldTryPropagate = false;
+        }
     }
 
     public override string ToString()
@@ -100,26 +126,56 @@ public class GridObject : MonoBehaviour
         selectedGameObject.SetActive(false);
     }
 
-    public void ShowFireSurface()
+    public void SetOnFire()
     {
+        if (fireSurface.activeSelf)
+        {
+            return;
+        }
+
         fireSurface.SetActive(true);
-        oilSurface.SetActive(false);
+
+        if (oilSurface.activeSelf)
+        {
+            oilSurface.SetActive(false);
+            shouldTryPropagate = true;
+            timer = 0.2f;
+        }
     }
 
-    public void HideFireSurface()
+    public void ClearFire()
     {
         fireSurface.SetActive(false);
     }
 
-    public void ShowOilSurface()
+    public bool IsOnFire()
     {
+        return fireSurface.activeSelf;
+    }
+
+    public void SetOnOil()
+    {
+        if (oilSurface.activeSelf)
+        {
+            return;
+        }
+
         oilSurface.SetActive(true);
-        fireSurface.SetActive(false);
+
+        if (fireSurface.activeSelf)
+        {
+            fireSurface.SetActive(false);
+        }
     }
 
-    public void HideOilSurface()
+    public void ClearOil()
     {
         oilSurface.SetActive(false);
+    }
+
+    public bool IsOnOil()
+    {
+        return oilSurface.activeSelf;
     }
 
     public int GetGCost()

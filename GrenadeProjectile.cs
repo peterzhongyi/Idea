@@ -61,9 +61,9 @@ public class GrenadeProjectile : MonoBehaviour
 
             foreach (GridObject gridObject in affectedGridObjects)
             {
-                gridObject.ShowFireSurface();
+                gridObject.SetOnFire();
             }
-            
+
             Destroy(gameObject);
 
             onGrenadeBehaviorComplete();

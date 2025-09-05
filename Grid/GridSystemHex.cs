@@ -279,7 +279,7 @@ public class GridSystemHex : MonoBehaviour
                 break;
         }
 
-        // ShowActionRange(selectedUnit.GetGridPosition(), selectedAction.GetActionRange(), GridVisualType.White);
+        ShowActionRange(selectedUnit.GetGridPosition(), selectedAction.GetActionRange(), GridVisualType.White);
 
         ShowGridPositionList(selectedAction.GetValidActionGridPositionList(), gridVisualType);
     }
@@ -467,7 +467,7 @@ public class GridSystemHex : MonoBehaviour
         return gridPositionList;
     }
 
-    private List<GridObject> GetNeighborList(GridObject currentNode)
+    public List<GridObject> GetNeighborList(GridObject currentNode)
     {
         List<GridObject> neighborList = new List<GridObject>();
 
